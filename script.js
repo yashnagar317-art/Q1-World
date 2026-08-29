@@ -15,7 +15,7 @@ const SUPABASE_URL =
   "https://prhafkklsifvagpdexzi.supabase.co";
 
 const SUPABASE_ANON_KEY =
-  "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
+  "https://prhafkklsifvagpdexzi.supabase.co/rest/v1/";
 
 
 /* ---------------------------------------------------------
