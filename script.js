@@ -12,7 +12,7 @@ const SUPABASE_URL =
   "https://prhafkklsifvagpdexzi.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE";
+  "sb_publishable_zg5yD1BMbtMY2g9yJJAzqw_JXsfu-Tk";
 
 
 /* ---------------------------------------------------------
