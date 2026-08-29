@@ -1,3 +1,173 @@
+document.addEventListener("DOMContentLoaded", () => {
+
+  const authModal = document.getElementById("authModal");
+  const openLoginBtn = document.getElementById("openLoginBtn");
+  const openSignupBtn = document.getElementById("openSignupBtn");
+  const closeAuthBtn = document.getElementById("closeAuthBtn");
+
+  const loginForm = document.getElementById("loginForm");
+  const signupForm = document.getElementById("signupForm");
+
+  const switchToSignup =
+    document.getElementById("switchToSignup");
+
+  const switchToLogin =
+    document.getElementById("switchToLogin");
+
+
+  function openModal(mode) {
+
+    if (!authModal) {
+      console.error("authModal not found");
+      return;
+    }
+
+    authModal.classList.remove("hidden");
+
+    document.body.classList.add("modal-open");
+
+
+    if (mode === "signup") {
+
+      loginForm.classList.add("hidden");
+      signupForm.classList.remove("hidden");
+
+    } else {
+
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+
+    }
+
+  }
+
+
+  function closeModal() {
+
+    if (!authModal) return;
+
+    authModal.classList.add("hidden");
+
+    document.body.classList.remove("modal-open");
+
+  }
+
+
+  if (openLoginBtn) {
+
+    openLoginBtn.addEventListener(
+      "click",
+      (event) => {
+
+        event.preventDefault();
+
+        openModal("login");
+
+      }
+    );
+
+  }
+
+
+  if (openSignupBtn) {
+
+    openSignupBtn.addEventListener(
+      "click",
+      (event) => {
+
+        event.preventDefault();
+
+        openModal("signup");
+
+      }
+    );
+
+  }
+
+
+  if (closeAuthBtn) {
+
+    closeAuthBtn.addEventListener(
+      "click",
+      closeModal
+    );
+
+  }
+
+
+  if (switchToSignup) {
+
+    switchToSignup.addEventListener(
+      "click",
+      (event) => {
+
+        event.preventDefault();
+
+        openModal("signup");
+
+      }
+    );
+
+  }
+
+
+  if (switchToLogin) {
+
+    switchToLogin.addEventListener(
+      "click",
+      (event) => {
+
+        event.preventDefault();
+
+        openModal("login");
+
+      }
+    );
+
+  }
+
+
+  if (authModal) {
+
+    authModal.addEventListener(
+      "click",
+      (event) => {
+
+        if (event.target === authModal) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key === "Escape" &&
+        authModal &&
+        !authModal.classList.contains("hidden")
+      ) {
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+  console.log(
+    "Q1 WORLD Auth buttons loaded successfully."
+  );
+
+});
 ```javascript
 /* =========================================================
    Q1 WORLD — LOGIN + SIGN UP + SUPABASE AUTH
