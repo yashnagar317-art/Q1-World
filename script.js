@@ -1,17 +1,6 @@
 ```javascript
 /* =========================================================
-   Q1 WORLD — SUPABASE AUTHENTICATION
-   =========================================================
-
-   IMPORTANT:
-   Put your Supabase Project URL and Publishable Key below.
-
-   NEVER use:
-   - sb_secret_...
-   - service_role key
-   - database password
-
-   The publishable key is intended for browser/client-side use.
+   Q1 WORLD — LOGIN + SIGN UP + SUPABASE AUTH
    ========================================================= */
 
 
@@ -23,11 +12,11 @@ const SUPABASE_URL =
   "https://prhafkklsifvagpdexzi.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "PASTE_YOUR_NEW_SB_PUBLISHABLE_KEY_HERE";
+  "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE";
 
 
 /* ---------------------------------------------------------
-   Check Supabase library
+   CHECK SUPABASE LIBRARY
    --------------------------------------------------------- */
 
 if (!window.supabase) {
@@ -36,19 +25,15 @@ if (!window.supabase) {
     "Supabase library was not loaded."
   );
 
-  alert(
-    "Q1 WORLD could not load the Supabase library. Please refresh the page."
-  );
-
   throw new Error(
-    "Supabase JavaScript library is missing."
+    "Supabase library missing. Check index.html."
   );
 
 }
 
 
 /* ---------------------------------------------------------
-   Create Supabase client
+   CREATE SUPABASE CLIENT
    --------------------------------------------------------- */
 
 const supabaseClient =
@@ -58,8 +43,13 @@ const supabaseClient =
   );
 
 
+console.log(
+  "Q1 WORLD: Supabase initialized."
+);
+
+
 /* ---------------------------------------------------------
-   DOM ELEMENTS
+   GET ELEMENTS
    --------------------------------------------------------- */
 
 const menuToggle =
@@ -112,14 +102,6 @@ const logoutBtn =
 
 
 /* ---------------------------------------------------------
-   BASIC DOM CHECK
-   --------------------------------------------------------- */
-
-console.log("Q1 WORLD JavaScript loaded.");
-console.log("Supabase client initialized.");
-
-
-/* ---------------------------------------------------------
    MOBILE MENU
    --------------------------------------------------------- */
 
@@ -129,12 +111,14 @@ if (menuToggle && navLinks) {
     "click",
     () => {
 
-      const active =
-        navLinks.classList.toggle("active");
+      const isOpen =
+        navLinks.classList.toggle(
+          "active"
+        );
 
       menuToggle.setAttribute(
         "aria-expanded",
-        String(active)
+        String(isOpen)
       );
 
     }
@@ -142,8 +126,6 @@ if (menuToggle && navLinks) {
 
 }
 
-
-/* Close mobile menu after navigation */
 
 document
   .querySelectorAll(".nav-links a")
@@ -219,12 +201,13 @@ function closeAuthModal() {
 
 
 function showAuthMode(
-  mode = "login"
+  mode
 ) {
 
   if (!loginForm || !signupForm) {
     return;
   }
+
 
   if (mode === "signup") {
 
@@ -248,13 +231,11 @@ function showAuthMode(
 
   }
 
-  clearMessage();
-
 }
 
 
 /* ---------------------------------------------------------
-   AUTH BUTTONS
+   OPEN LOGIN
    --------------------------------------------------------- */
 
 if (openLoginBtn) {
@@ -271,6 +252,10 @@ if (openLoginBtn) {
 }
 
 
+/* ---------------------------------------------------------
+   OPEN SIGN UP
+   --------------------------------------------------------- */
+
 if (openSignupBtn) {
 
   openSignupBtn.addEventListener(
@@ -285,21 +270,19 @@ if (openSignupBtn) {
 }
 
 
+/* ---------------------------------------------------------
+   CLOSE AUTH MODAL
+   --------------------------------------------------------- */
+
 if (closeAuthBtn) {
 
   closeAuthBtn.addEventListener(
     "click",
-    () => {
-
-      closeAuthModal();
-
-    }
+    closeAuthModal
   );
 
 }
 
-
-/* Click outside modal */
 
 if (authModal) {
 
@@ -321,8 +304,6 @@ if (authModal) {
 }
 
 
-/* Escape key */
-
 document.addEventListener(
   "keydown",
   (event) => {
@@ -342,7 +323,7 @@ document.addEventListener(
 
 
 /* ---------------------------------------------------------
-   SWITCH LOGIN / SIGNUP
+   SWITCH LOGIN → SIGN UP
    --------------------------------------------------------- */
 
 if (switchToSignup) {
@@ -353,11 +334,17 @@ if (switchToSignup) {
 
       showAuthMode("signup");
 
+      clearMessage();
+
     }
   );
 
 }
 
+
+/* ---------------------------------------------------------
+   SWITCH SIGN UP → LOGIN
+   --------------------------------------------------------- */
 
 if (switchToLogin) {
 
@@ -366,6 +353,8 @@ if (switchToLogin) {
     () => {
 
       showAuthMode("login");
+
+      clearMessage();
 
     }
   );
@@ -377,7 +366,9 @@ if (switchToLogin) {
    MESSAGES
    --------------------------------------------------------- */
 
-function showMessage(message) {
+function showMessage(
+  message
+) {
 
   if (!authMessage) return;
 
@@ -442,33 +433,25 @@ if (signupFormElement) {
       clearMessage();
 
 
-      const nameInput =
-        document.getElementById(
-          "signupName"
-        );
-
-      const emailInput =
-        document.getElementById(
-          "signupEmail"
-        );
-
-      const passwordInput =
-        document.getElementById(
-          "signupPassword"
-        );
-
-
       const name =
-        nameInput?.value.trim() || "";
+        document
+          .getElementById("signupName")
+          ?.value
+          .trim() || "";
+
 
       const email =
-        emailInput?.value.trim() || "";
+        document
+          .getElementById("signupEmail")
+          ?.value
+          .trim() || "";
+
 
       const password =
-        passwordInput?.value || "";
+        document
+          .getElementById("signupPassword")
+          ?.value || "";
 
-
-      /* Validate */
 
       if (
         !name ||
@@ -512,7 +495,7 @@ if (signupFormElement) {
       try {
 
         console.log(
-          "Creating Q1 WORLD account..."
+          "Q1 WORLD: Creating account..."
         );
 
 
@@ -522,9 +505,11 @@ if (signupFormElement) {
         } =
           await supabaseClient.auth.signUp({
 
-            email: email,
+            email:
+              email,
 
-            password: password,
+            password:
+              password,
 
             options: {
 
@@ -548,17 +533,17 @@ if (signupFormElement) {
 
 
         console.log(
-          "Signup response:",
+          "Q1 WORLD: Signup response",
           data
         );
 
 
+        signupFormElement.reset();
+
+
         /*
-
-          If email confirmation is enabled,
-          Supabase may return a user without
-          an active session.
-
+          Email confirmation ON:
+          user exists but session is null.
         */
 
         if (
@@ -589,15 +574,13 @@ if (signupFormElement) {
         }
 
 
-        signupFormElement.reset();
-
-
       } catch (error) {
 
         console.error(
-          "Signup error:",
+          "Q1 WORLD Signup Error:",
           error
         );
+
 
         showMessage(
           getFriendlyAuthError(error)
@@ -635,22 +618,17 @@ if (loginFormElement) {
       clearMessage();
 
 
-      const emailInput =
-        document.getElementById(
-          "loginEmail"
-        );
-
-      const passwordInput =
-        document.getElementById(
-          "loginPassword"
-        );
-
-
       const email =
-        emailInput?.value.trim() || "";
+        document
+          .getElementById("loginEmail")
+          ?.value
+          .trim() || "";
+
 
       const password =
-        passwordInput?.value || "";
+        document
+          .getElementById("loginPassword")
+          ?.value || "";
 
 
       if (
@@ -683,7 +661,7 @@ if (loginFormElement) {
       try {
 
         console.log(
-          "Logging into Q1 WORLD..."
+          "Q1 WORLD: Logging in..."
         );
 
 
@@ -711,17 +689,17 @@ if (loginFormElement) {
 
 
         console.log(
-          "Login successful:",
+          "Q1 WORLD: Login successful",
           data.user
         );
+
+
+        loginFormElement.reset();
 
 
         showMessage(
           "Login successful!"
         );
-
-
-        loginFormElement.reset();
 
 
         setTimeout(
@@ -737,9 +715,10 @@ if (loginFormElement) {
       } catch (error) {
 
         console.error(
-          "Login error:",
+          "Q1 WORLD Login Error:",
           error
         );
+
 
         showMessage(
           getFriendlyAuthError(error)
@@ -792,14 +771,14 @@ if (logoutBtn) {
 
 
         console.log(
-          "User logged out."
+          "Q1 WORLD: Logged out."
         );
 
 
       } catch (error) {
 
         console.error(
-          "Logout error:",
+          "Logout Error:",
           error
         );
 
@@ -817,7 +796,7 @@ if (logoutBtn) {
 
 
 /* ---------------------------------------------------------
-   GET USER PROFILE
+   GET PROFILE
    --------------------------------------------------------- */
 
 async function getUserProfile(
@@ -851,8 +830,8 @@ async function getUserProfile(
 
     if (error) {
 
-      console.error(
-        "Profile error:",
+      console.warn(
+        "Profile could not be loaded:",
         error
       );
 
@@ -865,7 +844,7 @@ async function getUserProfile(
 
   } catch (error) {
 
-    console.error(
+    console.warn(
       "Profile request failed:",
       error
     );
@@ -897,7 +876,7 @@ async function updateUserUI(
   }
 
 
-  /* No user */
+  /* Logged out */
 
   if (!user) {
 
@@ -920,7 +899,7 @@ async function updateUserUI(
   }
 
 
-  /* Logged-in user */
+  /* Logged in */
 
   const profile =
     await getUserProfile(user);
@@ -953,19 +932,19 @@ async function updateUserUI(
 
 
 /* ---------------------------------------------------------
-   AUTH STATE LISTENER
+   AUTH STATE
    --------------------------------------------------------- */
 
 supabaseClient.auth.onAuthStateChange(
-  async (event, session) => {
+  (event, session) => {
 
     console.log(
-      "Supabase Auth:",
+      "Q1 WORLD Auth Event:",
       event
     );
 
 
-    await updateUserUI(
+    updateUserUI(
       session?.user || null
     );
 
@@ -1002,14 +981,14 @@ async function checkExistingSession() {
 
 
     console.log(
-      "Session check complete."
+      "Q1 WORLD: Session checked."
     );
 
 
   } catch (error) {
 
     console.error(
-      "Session error:",
+      "Session Error:",
       error
     );
 
@@ -1019,7 +998,7 @@ async function checkExistingSession() {
 
 
 /* ---------------------------------------------------------
-   FRIENDLY AUTH ERRORS
+   FRIENDLY ERROR MESSAGES
    --------------------------------------------------------- */
 
 function getFriendlyAuthError(
@@ -1039,7 +1018,7 @@ function getFriendlyAuthError(
   ) {
 
     return (
-      "Supabase API key is invalid. Please check the Q1 WORLD Project URL and Publishable Key."
+      "Invalid Supabase API key. Check your Project URL and Publishable Key."
     );
 
   }
@@ -1052,7 +1031,7 @@ function getFriendlyAuthError(
   ) {
 
     return (
-      "Unable to connect to Supabase. Please check your internet connection and project URL."
+      "Could not connect to Supabase. Please check your internet connection."
     );
 
   }
@@ -1104,7 +1083,7 @@ function getFriendlyAuthError(
   ) {
 
     return (
-      "Please use a stronger password."
+      "Password must be at least 6 characters."
     );
 
   }
@@ -1125,7 +1104,7 @@ function getFriendlyAuthError(
 
   if (
     message.includes(
-      "email address"
+      "email"
     ) &&
     message.includes(
       "invalid"
@@ -1148,7 +1127,7 @@ function getFriendlyAuthError(
 
 
 /* ---------------------------------------------------------
-   START Q1 WORLD
+   START
    --------------------------------------------------------- */
 
 checkExistingSession();
