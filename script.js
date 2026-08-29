@@ -15,8 +15,7 @@ const SUPABASE_URL =
   "https://prhafkklsifvagpdexzi.supabase.co";
 
 const SUPABASE_ANON_KEY =
-  "https://prhafkklsifvagpdexzi.supabase.co/rest/v1/";
-
+  "sb_publishable_HAlm-Hvyoapbklav-nq6GA_eDmEJqVw";
 
 /* ---------------------------------------------------------
    Supabase client
